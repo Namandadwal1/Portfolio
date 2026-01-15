@@ -5,12 +5,14 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/all";
 import { ScrollTrigger } from "gsap/all";
+import { useNavigate, useLocation } from "react-router-dom";
 
 gsap.registerPlugin(SplitText);
 gsap.registerPlugin(ScrollTrigger);
 function Navbar({ open, setOpen }) {
 
   const [menu, setMenu] = useState(false);
+  const navigate = useNavigate();
   const menuRef = useRef(null);
   const textRef = useRef(null);
 
@@ -84,6 +86,12 @@ function Navbar({ open, setOpen }) {
     { dependencies: [menu] }
   );
 
+  const location = useLocation();
+
+  useEffect(() => {
+    setMenu(false);
+  }, [location]);
+
   useEffect(() => {
     document.body.style.overflow = menu ? "hidden" : "auto";
   }, [menu]);
@@ -91,16 +99,16 @@ function Navbar({ open, setOpen }) {
   return (
     <div className="relative ">
       <nav className="flex lg:justify-around justify-between z-50 w-full left-0 fixed top-0 backdrop-blur-md  p-2">
-        <div className="logo">
-          <h1 className="lg:text-[3vw] lg:leading-[3vw] md:text-[5vw] md:leading-[5vw] sm:text-[5vw] sm:leading-[5vw] text-[10vw] leading-[9vw] uppercase font-[font5]">
+        <div onClick={() => navigate("/")} className="logo">
+          <h1 className="lg:text-[3vw] cursor-pointer lg:leading-[3vw] md:text-[5vw] md:leading-[5vw] sm:text-[5vw] sm:leading-[5vw] text-[10vw] leading-[9vw] uppercase font-[font5]">
             Dadwal
             <br />
             Developer
           </h1>
         </div>
         <div className="links   lg:flex md:flex sm:hidden hidden gap-5 font-[font2] items-center  text-2xl justify-center">
-          <h1>Home</h1>
-          <h1>Projects</h1>
+          <h1 className="cursor-pointer" onClick={() => navigate("/")}>Home</h1>
+          <h1 className="cursor-pointer" onClick={() => navigate("/work")}>Projects</h1>
           <button className="bg-[var(--foreground)] text-[var(--background)] px-4 py-2 rounded-full cursor-pointer transition-colors duration-300">
             Contact
           </button>
@@ -131,29 +139,29 @@ function Navbar({ open, setOpen }) {
           </button>
         </div>
       </nav>
-      {menu &&(
+      {menu && (
         <div
-        ref={menuRef}
-        className={`fixed  h-screen opacity-0 invisible z-40  w-full menu lg:hidden md:hidden flex flex-col items-center justify-center ${menu ? "pointer-events-auto" : "pointer-events-none"
-          }`}
-        style={{ opacity: 0 }}
-      >
-        <div
-          ref={textRef}
-          className="uppercase font-[font5]  flex items-center justify-center flex-col "
+          ref={menuRef}
+          className={`fixed  h-screen opacity-0 invisible z-40  w-full menu lg:hidden md:hidden flex flex-col items-center justify-center ${menu ? "pointer-events-auto" : "pointer-events-none"
+            }`}
+          style={{ opacity: 0 }}
         >
-          <h1 className="text-[17vw] sm:text-[14vw] md:text-[9vw] text overflow-hidden">
-            Home
-          </h1>
-          <h1 className="text-[17vw] sm:text-[14vw] md:text-[9vw] text overflow-hidden">
-            Projects
-          </h1>
-          <h1 className="text-[17vw] sm:text-[14vw] md:text-[9vw] text overflow-hidden">
-            {" "}
-            COntact us
-          </h1>
+          <div
+            ref={textRef}
+            className="uppercase font-[font5]  flex items-center justify-center flex-col "
+          >
+            <h1 onClick={() => navigate("/")} className="text-[17vw] sm:text-[14vw] md:text-[9vw] text overflow-hidden">
+              Home
+            </h1>
+            <h1 onClick={() => navigate("/work")} className="text-[17vw] sm:text-[14vw] md:text-[9vw] text overflow-hidden">
+              Projects
+            </h1>
+            <h1 className="text-[17vw] sm:text-[14vw] md:text-[9vw] text overflow-hidden">
+              {" "}
+              COntact us
+            </h1>
+          </div>
         </div>
-      </div>
       )}
     </div>
   );

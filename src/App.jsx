@@ -5,6 +5,8 @@ import Lenis from "lenis";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import Work from "./pages/Work";
+import {Routes, Route} from "react-router-dom";
 
 function App() {
   useEffect(() => {
@@ -33,7 +35,10 @@ function App() {
   return (
     <div className="">
       <Navbar open={open} setOpen={setOpen} />
-      <Home />  
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/work" element={<Work />} />
+      </Routes>
     </div>
   );
 }
